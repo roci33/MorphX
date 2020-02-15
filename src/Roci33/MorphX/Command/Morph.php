@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 namespace Roci33\MorphX\Command;
-
 use pocketmine\Player;
 use Roci33\MorphX\Entity\LiveCow;
 use Roci33\MorphX\Entity\LiveCreeper;
@@ -191,7 +190,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             break;
                     }
                 } else {
-                    $sender->sendMessage(TextFormat::RED . "Error: Unset name of mob, use /morph help");
+                    $sender->sendMessage(TextFormat::RED . "Error: Unset name of mob, use /morph help ");
                 }
             }
         }

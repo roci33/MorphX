@@ -29,8 +29,8 @@ class Morph extends Command implements PluginIdentifiableCommand {
     private $plugin;
 
     public function __construct(Main $plugin) {
-        parent::__construct("morph", "This command allows you to become an entity", "Usage: /morph <mob>", ["m"]);
-        $this->setPermission("morphX.command.morph");
+        parent::__construct("morph", "This command allows you to become an entity", "Usage: /morph [entity]", ["m"]);
+        $this->setPermission("morphx.command.morph");
         $this->plugin = $plugin;
     }
 

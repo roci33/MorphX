@@ -5,10 +5,6 @@ authors:
 api: 3.0.0
 main: Roci33\MorphX\Main
 permissions:
-  morphx.command:
+  morphx.command.morph:
     default: op
-    description: "Allows to use every morphx features"
-    children:
-         morphx.command.morph:
-            default: op
-            description: "Allows the player to be a mob"
+    description: "Allows to use every morphx command"

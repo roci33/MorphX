@@ -7,6 +7,7 @@ use Roci33\MorphX\Entity\LiveCow;
 use Roci33\MorphX\Entity\LiveCreeper;
 use Roci33\MorphX\Entity\LiveSheep;
 use Roci33\MorphX\Entity\LiveSkeleton;
+use Roci33\MorphX\Entity\LiveSpider;
 use Roci33\MorphX\Entity\LiveVillager;
 use Roci33\MorphX\Entity\LiveWitch;
 use Roci33\MorphX\Entity\LiveWither;
@@ -50,7 +51,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             $sender->sendMessage(TextFormat::BLUE . "Command: \n" . "/morph list: Give you the list of Entity \n " . "/morph entity: It transforms you into the entity");
                             break;
                         case "list":
-                            $sender->sendMessage(TextFormat::BLUE . "List Entity: cow, creeper, sheep, skeleton, villager, witch, wither, wither skeleton, zombie");
+                            $sender->sendMessage(TextFormat::BLUE . "List Entity: cow, creeper, sheep, skeleton, villager, witch, wither, wither skeleton, zombie, spider");
                             break;
                         case "remove":
                             if ($data->isId()) {
@@ -180,6 +181,19 @@ class Morph extends Command implements PluginIdentifiableCommand {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveWitch($sender->level, $nbt, $sender);
                                 $sender->sendMessage(TextFormat::BLUE . "Now you are Witch!");
+                                $ent->spawnToAll();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
+                                $data->saveEntityId($ent->getId());
+                                $data->save();
+                            } else {
+                                $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
+                            }
+                            break;
+                        case "spider":
+                            if (!$data->isId()) {
+                                $nbt = Entity::createBaseNBT($sender->asVector3());
+                                $ent = new LiveSpider($sender->level, $nbt, $sender);
+                                $sender->sendMessage(TextFormat::BLUE . "Now you are Spider!");
                                 $ent->spawnToAll();
                                 $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());

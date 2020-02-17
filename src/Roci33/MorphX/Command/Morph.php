@@ -5,6 +5,7 @@ namespace Roci33\MorphX\Command;
 use pocketmine\Player;
 use Roci33\MorphX\Entity\LiveCow;
 use Roci33\MorphX\Entity\LiveCreeper;
+use Roci33\MorphX\Entity\LivePig;
 use Roci33\MorphX\Entity\LiveSheep;
 use Roci33\MorphX\Entity\LiveSkeleton;
 use Roci33\MorphX\Entity\LiveSpider;
@@ -20,7 +21,6 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
 use Roci33\MorphX\Entity\LiveZombie;
 use Roci33\MorphX\PlayerData;
 
@@ -43,6 +43,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool {
         $data = new PlayerData($this->plugin, $sender->getName());
+        $p = $this->plugin->getServer()->getOnlinePlayers();
         if ($this->testPermission($sender)) {
             if ($sender instanceof Player) {
                 if (isset($args[0])) {
@@ -51,7 +52,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             $sender->sendMessage(TextFormat::BLUE . "Command: \n" . "/morph list: Give you the list of Entity \n " . "/morph entity: It transforms you into the entity");
                             break;
                         case "list":
-                            $sender->sendMessage(TextFormat::BLUE . "List Entity: cow, creeper, sheep, skeleton, villager, witch, wither, wither skeleton, zombie, spider");
+                            $sender->sendMessage(TextFormat::BLUE . "List Entity: cow, creeper, sheep, skeleton, villager, witch, wither, wither skeleton, zombie, spider, pig");
                             break;
                         case "remove":
                             if ($data->isId()) {
@@ -62,6 +63,9 @@ class Morph extends Command implements PluginIdentifiableCommand {
                                     $id->close();
                                     $data->removeEntityId();
                                     $data->save();
+                                    foreach ($p as $player) {
+                                        $player->showPlayer($sender);
+                                    }
                                 } else {
                                     $sender->sendMessage(TextFormat::RED . "Error: Entity not found");
                                     $data->removeEntityId();
@@ -75,12 +79,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "zombie":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveZombie($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Zombie!");
+                                $ent = new LiveZombie($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Zombie!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -88,12 +94,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "villager":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveVillager($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Villager!");
+                                $ent = new LiveVillager($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Villager!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -101,12 +109,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "skeleton":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveSkeleton($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Skeleton!");
+                                $ent = new LiveSkeleton($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Skeleton!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -114,12 +124,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "creeper":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveCreeper($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Creeper!");
+                                $ent = new LiveCreeper($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Creeper!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -127,12 +139,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "sheep":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveSheep($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Sheep!");
+                                $ent = new LiveSheep($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Sheep!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -140,12 +154,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "cow":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveCow($sender->level, $nbt, $sender);
+                                $ent = new LiveCow($sender->level, $nbt, $sender, $this->plugin);
                                 $sender->sendMessage(TextFormat::BLUE . "Now you are Cow!");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -153,12 +169,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "witherskeleton":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveWitherSkeleton($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Wither Skeleton!");
+                                $ent = new LiveWitherSkeleton($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Wither Skeleton!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -166,12 +184,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "wither":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveWither($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Wither!");
+                                $ent = new LiveWither($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Wither!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -179,12 +199,14 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "witch":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveWitch($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Witch!");
+                                $ent = new LiveWitch($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Witch!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }
@@ -192,12 +214,29 @@ class Morph extends Command implements PluginIdentifiableCommand {
                         case "spider":
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
-                                $ent = new LiveSpider($sender->level, $nbt, $sender);
-                                $sender->sendMessage(TextFormat::BLUE . "Now you are Spider!");
+                                $ent = new LiveSpider($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Spider!(remember that only you can see your player!)");
                                 $ent->spawnToAll();
-                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
+                            } else {
+                                $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
+                            }
+                            break;
+                        case "pig":
+                            if (!$data->isId()) {
+                                $nbt = Entity::createBaseNBT($sender->asVector3());
+                                $ent = new LivePig($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Pig!(remember that only you can see your player!)");
+                                $ent->spawnToAll();
+                                $data->saveEntityId($ent->getId());
+                                $data->save();
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
                             } else {
                                 $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
                             }

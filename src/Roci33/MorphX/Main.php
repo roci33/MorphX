@@ -21,7 +21,6 @@ class Main extends PluginBase implements Listener {
     public function onJoin(PlayerJoinEvent $event) {
         $player = $event->getPlayer();
         $this->ps[$player->getId()] = new PlayerData($this, $player->getName());
-        $data = $this->ps[$player->getId()];
     }
 
     public function onQuit(PlayerQuitEvent $event) {

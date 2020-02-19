@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Roci33\MorphX\Entity;
+use pocketmine\entity\Effect;
 use pocketmine\entity\Living;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -45,6 +46,10 @@ class LiveCow extends Living {
         $id->close();
         $data->removeEntityId();
         $data->save();
+        $this->player->removeEffect(Effect::INVISIBILITY);
+        foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+            $player->showPlayer($this->player);
+        }
         return true;
     }
 }

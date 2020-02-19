@@ -5,6 +5,6 @@ branches:
 projects:
   MorphX:
     path: ""
-    icon: "icon.PNG"
+    icon: "icon.png"
     
 ...

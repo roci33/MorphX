@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Roci33\MorphX;
+use pocketmine\entity\Entity;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 use Roci33\MorphX\Command\Morph;
@@ -28,7 +29,16 @@ class Main extends PluginBase implements Listener {
         if (isset($this->ps[$player->getId()])) {
             unset($this->ps[$player->getId()]);
             $player->removeEffect(Effect::INVISIBILITY);
-
+            $data = new PlayerData($this, $player->getName());
+            if ($data->isId() and $player->getLevel()->getEntity($data->getId()) instanceof Entity) {
+                $id = $player->getLevel()->getEntity($data->getId());
+                $id->close();
+                foreach ($this->getServer()->getOnlinePlayers() as $player) {
+                    $player->showPlayer($player);
+                }
+                $data->removeEntityId();
+                $data->save();
+            }
         }
     }
 

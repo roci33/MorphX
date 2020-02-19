@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Roci33\MorphX\Command;
+use pocketmine\entity\EffectInstance;
 use pocketmine\Player;
 use Roci33\MorphX\Entity\LiveCow;
 use Roci33\MorphX\Entity\LiveCreeper;
@@ -13,6 +14,7 @@ use Roci33\MorphX\Entity\LiveVillager;
 use Roci33\MorphX\Entity\LiveWitch;
 use Roci33\MorphX\Entity\LiveWither;
 use Roci33\MorphX\Entity\LiveWitherSkeleton;
+use Roci33\MorphX\Entity\LiveWolf;
 use Roci33\MorphX\Main;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -52,7 +54,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             $sender->sendMessage(TextFormat::BLUE . "Command: \n" . "/morph list: Give you the list of Entity \n " . "/morph entity: It transforms you into the entity");
                             break;
                         case "list":
-                            $sender->sendMessage(TextFormat::BLUE . "List Entity: cow, creeper, sheep, skeleton, villager, witch, wither, wither skeleton, zombie, spider, pig");
+                            $sender->sendMessage(TextFormat::BLUE . "List Entity: cow, creeper, sheep, skeleton, villager, witch, wither, wither skeleton, zombie, spider, pig, wolf");
                             break;
                         case "remove":
                             if ($data->isId()) {
@@ -80,10 +82,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveZombie($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Zombie!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Zombie!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -95,10 +98,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveVillager($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Villager!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Villager!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -110,10 +114,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveSkeleton($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Skeleton!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Skeleton!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -125,10 +130,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveCreeper($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Creeper!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Creeper!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -140,10 +146,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveSheep($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Sheep!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Sheep!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -159,6 +166,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -170,10 +178,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveWitherSkeleton($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Wither Skeleton!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Wither Skeleton!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -185,10 +194,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveWither($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Wither!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Wither!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -200,10 +210,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveWitch($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Witch!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Witch!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -215,10 +226,11 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LiveSpider($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Spider!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Spider!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }
@@ -230,10 +242,27 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             if (!$data->isId()) {
                                 $nbt = Entity::createBaseNBT($sender->asVector3());
                                 $ent = new LivePig($sender->level, $nbt, $sender, $this->plugin);
-                                $sender->sendMessage(TextFormat::RED . "Now you are Pig!(remember that only you can see your player!)");
+                                $sender->sendMessage(TextFormat::RED . "Now you are Pig!");
                                 $ent->spawnToAll();
                                 $data->saveEntityId($ent->getId());
                                 $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
+                                foreach ($p as $player) {
+                                    $player->hidePlayer($sender);
+                                }
+                            } else {
+                                $sender->sendMessage(TextFormat::RED . "Error: you  have just spawn a mob, use /morph remove");
+                            }
+                            break;
+                        case "wolf":
+                            if (!$data->isId()) {
+                                $nbt = Entity::createBaseNBT($sender->asVector3());
+                                $ent = new LiveWolf($sender->level, $nbt, $sender, $this->plugin);
+                                $sender->sendMessage(TextFormat::RED . "Now you are Wolf!");
+                                $ent->spawnToAll();
+                                $data->saveEntityId($ent->getId());
+                                $data->save();
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), INT32_MAX, 0, false));
                                 foreach ($p as $player) {
                                     $player->hidePlayer($sender);
                                 }

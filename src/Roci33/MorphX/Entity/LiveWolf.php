@@ -12,11 +12,11 @@ use pocketmine\utils\TextFormat;
 use Roci33\MorphX\Main;
 use Roci33\MorphX\PlayerData;
 
-class LiveSpider extends Living {
-    public const NETWORK_ID = self::SPIDER;
+class LiveWolf extends Living {
+    public const NETWORK_ID = self::WOLF;
 
-    public $width = 1.4;
-    public $height = 0.9;
+    public $width = 0.6;
+    public $height = 0.85;
     public $player;
     public $plugin;
 
@@ -27,7 +27,7 @@ class LiveSpider extends Living {
     }
 
     public function getName(): string {
-        return "Spider";
+        return "Wolf";
     }
 
     public function canSaveWithChunk(): bool {

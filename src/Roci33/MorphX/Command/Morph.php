@@ -272,7 +272,7 @@ class Morph extends Command implements PluginIdentifiableCommand {
                             break;
                     }
                 } else {
-                    $sender->sendMessage(TextFormat::RED . "Error: Unset name of mob, use /morph help ");
+                    $sender->sendMessage(TextFormat::RED . "Error: Unset name of mob, use /morph help");
                 }
             }
         }
